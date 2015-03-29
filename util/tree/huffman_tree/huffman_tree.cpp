@@ -1,3 +1,4 @@
+#include <iostream>
 #include <algorithm>
 #include "huffman_tree.h"
 
@@ -44,7 +45,7 @@ int HuffmanTree::set_in_data(
   return RC_OK;
 }
 
-int HuffmanTree::build_cw_map()
+int HuffmanTree::build_cws_map()
 {
   const char *c = in_data_;
   map<char, int>::iterator iter;
@@ -59,14 +60,15 @@ int HuffmanTree::build_cw_map()
     {
       cw_map_[*c] = 1;
     }
+    ++c;
   }
 
   return RC_OK;
 }
 
-int HuffmanTree::build_cw_vec()
+int HuffmanTree::build_cws_vec()
 {
-  build_cw_map();
+  build_cws_map();
   CharWeight cw;
   for(map<char,int>::iterator 
       iter = cw_map_.begin();
@@ -84,15 +86,41 @@ int HuffmanTree::build_cw_vec()
   return RC_OK;
 }
 
-int HuffmanTree::build_huffman_tree()
+int HuffmanTree::build_huffman_code()
 {
-  build_cw_vec();
+  build_cws_vec();
+
+  string last_hf_code = "";
+  char cur_char;
+
+  while(!cws_vec_.empty())
+  {
+    cur_char = cws_vec_.back().c;
+    cout<<" build hufman code, char:"<<cws_vec_.back().c<<", \tweight:"<< cws_vec_.back().w<<endl;
+    cws_vec_.pop_back();
+    string hf_code = last_hf_code + "1";
+    huffman_code_[cur_char] = hf_code; 
+    last_hf_code += "0";
+  } 
 
   return RC_OK;
 }
 
-int HuffmanTree::build_huffman_code()
+int HuffmanTree::Clean()
 {
-  
-  return RC_OK;
+  cw_map_.clear();
+  cws_vec_.clear();
+  human_code_.clear();
+  return 0;
+}
+
+int HuffmanTree::DebugInfo()
+{
+  for(map<char, string>::iterator iter=huffman_code_.begin(); 
+      iter!=huffman_code_.end(); 
+      ++iter)
+  {
+    cout<<"char: "<< iter->first<< ", hf_code: "<<iter->second<<endl;
+  }
+  return 0;
 }

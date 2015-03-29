@@ -23,21 +23,21 @@ public:
   HuffmanTree();
   HuffmanTree(const char *in_cdata);
   HuffmanTree(const std::string &in_sdata);
-  int build_huffman_code();
   std::string get_huffman_code(char in_c)const;
-  int clean();
+  int build_huffman_code();
   int set_in_data(const char *in_cdata);
   int set_in_data(const std::string &in_sdata);
+  int Clean();
+  int DebugInfo();
 
 protected:
   static bool CampareCW(const CharWeight &i, const CharWeight &j)
   {
-    return i.w > j.w;
+    return i.w < j.w;
   }
 
-  int build_cw_map();
+  int build_cws_map();
   int build_cws_vec();
-  int build_huffman_tree();
 
 private:
   const char *in_data_;
