@@ -13,25 +13,45 @@ bool Swap(int &a, int &b)
 
 bool QuickSort(int *ia, int left, int right)
 {
-
-  if(left + 1 >= right)
-  {
+  if(left == right)
     return true;
+
+  int mp = (left + right) / 2;
+  int lp = left;
+  int rp = right;
+  while(mp != lp || mp != rp)
+  {
+    while(rp > mp)
+    {
+      if(ia[rp] > ia[mp])
+        --rp;
+      else
+      {
+        Swap(ia[rp], ia[mp]);
+        mp = rp;
+        break;
+      }
+    }
+
+    while(lp < mp)
+    {
+      if(ia[lp] <= ia[mp])
+        ++lp;
+      else
+      {
+        Swap(ia[lp], ia[mp]);
+        mp = lp;
+        break;
+      }
+
+    }
   }
 
-  int lpos = left;
-  int rpos = right;
-  while(lpos < rpos)
-  {
-    while(ia[lpos] <= ia[rpos] && lpos < rpos) --rpos;
-    if(lpos < rpos) Swap(ia[lpos], ia[rpos]);
+  if(left < mp-1)
+    QuickSort(ia, left, mp-1);
+  if(mp+1 < right)
+    QuickSort(ia, mp+1, right);
 
-    while(ia[lpos] <= ia[rpos] && lpos < rpos) ++lpos;
-    if(lpos < rpos) Swap(ia[lpos], ia[rpos]);
-  } 
-
-  if(lpos != left) QuickSort(ia, left, lpos-1);
-  if(rpos != right) QuickSort(ia, rpos+1, right);
   return true;
 }
 

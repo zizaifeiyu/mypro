@@ -1,0 +1,52 @@
+#include <iostream>
+using namespace std;
+
+int c16to10(const char *a)
+{
+  int res = 0;
+  int len = strlen(a);
+  int weight = 1;
+  int p = 1;
+  int pos = 0;
+  if(len > 0 && a[0] == '-')
+  {
+    p = -1;
+    ++pos; 
+  }
+  cout<<"rec str:"<<a<<", strlen:"<<len<<endl;
+
+  while(pos < len)
+  {
+    int i = 0;
+    if(a[pos] >= '0' && a[pos] <= '9')
+    {
+      i = a[pos] - '0';
+    }
+    else if(a[pos] >= 'a' && a[pos] <= 'f')
+    {
+      i = a[pos] - 'a' + 10;
+    }
+    else if(a[pos] >= 'A' && a[pos] <= 'F')
+    {
+      i = a[pos] - 'A' + 10;
+    }
+    else
+      break;
+
+    ++pos; 
+    res += i * weight;
+    weight *= 16;
+  }
+  if(p == -1)
+    res *= -1;
+  return res;
+}
+
+int main()
+{
+  const char * a = "1A";
+  int res = c16to10(a);
+  cout<<"int res:"<<res<<endl;
+
+  return 0;
+}

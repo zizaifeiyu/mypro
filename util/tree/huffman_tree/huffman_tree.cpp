@@ -110,7 +110,7 @@ int HuffmanTree::Clean()
 {
   cw_map_.clear();
   cws_vec_.clear();
-  human_code_.clear();
+  huffman_code_.clear();
   return 0;
 }
 
@@ -120,7 +120,7 @@ int HuffmanTree::DebugInfo()
       iter!=huffman_code_.end(); 
       ++iter)
   {
-    cout<<"char: "<< iter->first<< ", hf_code: "<<iter->second<<endl;
+    cout<<"char: "<< iter->first<< ",\thf_code: "<<iter->second<<endl;
   }
   return 0;
 }
