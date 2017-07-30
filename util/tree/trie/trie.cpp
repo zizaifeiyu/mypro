@@ -5,16 +5,16 @@ using namespace util::trie;
 
 Trie::Trie()
 {
-  _root = NULL;
+  root_ = NULL;
 }
 
 Trie::~Trie()
 {
-  if(NULL != _root)
+  if(NULL != root_)
   {
     TN *tmp_tn = NULL;
     queue<TN*> qe_tn;
-    qe_tn.push(_root);
+    qe_tn.push(root_);
 
     while(!qe_tn.empty())
     {
@@ -39,14 +39,13 @@ Trie::~Trie()
 
 bool Trie::Init()
 {  
-  if(NULL != _root)
+  if(NULL != root_)
   {
     cerr<<"Trie::init, reinit."<<endl;
     return false;
   }
 
-
-  return true;
+  return AddTN(NULL, NULL, NULL, root_);
 }
 
 bool Trie::AddString(const string &str)
@@ -56,13 +55,13 @@ bool Trie::AddString(const string &str)
 
 bool Trie::AddString(const char *const cstr)
 {
-  if(NULL == _root)
+  if(NULL == root_)
   {
     return false;
   }
 
-  TN *ptn = _root->lchild;
-  TN *pparent = _root;
+  TN *ptn = root_->lchild;
+  TN *pparent = root_;
   const char *ctmp = cstr;
   while(*tmp != '\n' && ptn != NULL)
   {
@@ -76,11 +75,16 @@ bool Trie::AddString(const char *const cstr)
       ++ctmp;
       pparent = ptn;
       ptn = ptn->lchild;
-      break;
+      continue;
     }
     else if(tn->data < *ctmp)
     {
-         
+      TN *tmp_tn = NULL;
+      if(!AddString(pparent, NULL, tn, tmp_tn))
+      {
+        return false;
+      }
+
     }
   }
 }
@@ -88,6 +92,11 @@ bool Trie::AddString(const char *const cstr)
 bool Trie::AddTN(const TN *parent, const TN *lbro, const TN *rbro,
     TN *tn)
 {
+  if(NULL != rn)
+  {
+    return false;
+  }
+
   try
   {
     tn = new TN;
@@ -101,6 +110,23 @@ bool Trie::AddTN(const TN *parent, const TN *lbro, const TN *rbro,
 
   tn->lchild = NULL;
   tn->rbro = NULL;
+
+  if(NULL != parent)
+  {
+    parent->lchild = tn;
+    tn->rbro = parent->lchild;
+  }
+
+  if(NULL != lbro)
+  {
+    tn->rbro = tmp_tn;  
+    lbro->rbro = tn;
+  }
+
+  if(NULL != rbro)
+  {
+    tn->rbro = rbro;
+  }
 
   return true;
 }

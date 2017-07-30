@@ -35,7 +35,7 @@ protected:
       TN *tn);
 
 private:  
-  TN *_root;  
+  TN *root_;  
 }
 
 
